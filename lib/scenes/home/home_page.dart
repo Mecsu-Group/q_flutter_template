@@ -1,30 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:q_flutter_template/services/safety/base_statefull.dart';
 import './home_provider.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+final pHomeProvider = ChangeNotifierProvider((_) => HomeProvider());
 
-  final String title;
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({Key? key, this.title}) : super(key: key);
 
-    @override
-  State<HomePage> createState() => _HomePageState();
+  final String? title;
+
+  @override
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends BaseStateful<HomePage> 
+  with WidgetsBindingObserver {
 
-  int _counter = 0;
+  late HomeProvider homeProvider;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initDependencies(WidgetRef ref) {
+    super.initDependencies(ref);
+    homeProvider = ref.read(pHomeProvider);
+  }
+
+  @override
+  void afterFirstBuild(WidgetRef ref) {
+    homeProvider.resetState();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -38,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
+          title: Text(widget.title ?? ''),
         ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -63,14 +79,14 @@ class _HomePageState extends State<HomePage> {
                 'You have pushed the button this many times:',
               ),
               Text(
-                '$_counter',
+                '${ref.watch(pHomeProvider).counter}',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
+          onPressed: homeProvider.increase,
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         ),
