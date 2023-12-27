@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:q_flutter_template/services/safety/base_statefull.dart';
+import 'package:q_flutter_template/safety/base_statefull.dart';
 import './home_provider.dart';
 
 final pHomeProvider = ChangeNotifierProvider((_) => HomeProvider());

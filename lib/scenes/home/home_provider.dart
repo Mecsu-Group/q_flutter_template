@@ -1,4 +1,4 @@
-import 'package:q_flutter_template/services/safety/change_notifier_safety.dart';
+import 'package:q_flutter_template/safety/change_notifier_safety.dart';
 
 class HomeProvider extends ChangeNotifierSafety {
   HomeProvider();
