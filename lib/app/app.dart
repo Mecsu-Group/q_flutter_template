@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:q_flutter_template/scenes/home/home_page.dart';
 
-import '../scenes/home/home_page.dart';
+import '../utils/app_extension.dart';
+
+import './app_route.dart';
 
 Future<void> bootstrap() async {
   /// Start services later
@@ -21,10 +24,25 @@ Future<void> bootstrap() async {
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends ConsumerStatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    /// Init page route
+    () async {
+      ref.navigator()?.pushReplacementNamed(AppRoute.routeHome);
+    }();
+  }
+
+    // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,9 +50,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
-      ),
-      home: const HomePage(title: 'Flutter Q.')
+      )
     );
   }
-
 }
