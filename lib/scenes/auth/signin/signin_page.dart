@@ -28,8 +28,32 @@ class _SignInPageState extends BaseStateful<SignInPage> with WidgetsBindingObser
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title ?? ''),
         ),
-        body: SafeArea(
+        body: const SafeArea(
           child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget> [
+                    Text(
+                      "Xin chào",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "Đăng nhập bằng email và mật khẩu của bạn",
+                      textAlign: TextAlign.center,
+                    ),
+
+                    SizedBox(height: 20),
+                  ],
+                )
+              ),
+            ),
           ),
         ),
     );

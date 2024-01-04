@@ -33,12 +33,12 @@ class AppRoute {
       case routeRoot:
       case routeHome: {
         return MaterialPageRoute<dynamic>(
-            settings: settings, builder: (_) => const HomePage());
+            settings: settings, builder: (_) => const HomePage(title: 'Flutter Q.'));
       }
 
       case routeSignIn: {
         return MaterialPageRoute<dynamic>(
-            settings: settings, builder: (_) => const SignInPage());
+            settings: settings, builder: (_) => const SignInPage(title: 'Sign in',));
       }
 
       default: {
