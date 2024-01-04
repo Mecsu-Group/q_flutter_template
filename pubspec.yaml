@@ -39,6 +39,7 @@ dependencies:
   logger: ^2.0.2+1
   flutter_screenutil: ^5.9.0
   realm: ^1.6.1
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
