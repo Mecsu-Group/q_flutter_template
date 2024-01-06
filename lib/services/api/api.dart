@@ -13,6 +13,7 @@ class Api {
 
   /// Get base url by env
   final String apiBaseUrl = AppConfig.I.env.apiBaseUrl;
+  final String apiSignIn = AppConfig.I.env.apiSignIn;
   final Dio dio = Dio();
 
   /// Get request header options

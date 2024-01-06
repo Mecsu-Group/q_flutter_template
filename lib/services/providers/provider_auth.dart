@@ -5,7 +5,7 @@ import 'package:q_flutter_template/services/api/api_user.dart';
 class AuthProvider extends ChangeNotifierSafety {
   AuthProvider(this._api);
 
-    /// Authentication api
+  /// Authentication api
   final ApiUser _api;
 
 
@@ -15,13 +15,8 @@ class AuthProvider extends ChangeNotifierSafety {
   Future<bool> signIn(String email, String password) async {
     final Response<Map<String, dynamic>> result = 
       await _api.signIn(email, password).timeout(const Duration(seconds: 30));
-    print(result);
-
     if (result != null) {
-      /// Save credential
-      // final bool saveRes = await _credential.add(token, cache: true);
-      print('Should be saved');
-      
+
       return true;
     } else {
       throw DioError(
@@ -30,5 +25,4 @@ class AuthProvider extends ChangeNotifierSafety {
           type: DioErrorType.badResponse);
     }
   }
-
 }

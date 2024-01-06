@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:q_flutter_template/app/app_route.dart';
+import 'package:q_flutter_template/utils/app_extension.dart';
 import 'package:q_flutter_template/utils/app_log.dart';
 import 'package:q_flutter_template/safety/page_stateful.dart';
 
@@ -105,9 +107,28 @@ class _SignInPageState extends PageStateful<SignInPage> with WidgetsBindingObser
                     ElevatedButton(
                       key: const Key('SignIn'),
                       onPressed: ref.watch(pSignInProvider.select((value) => value.formValid)) 
+
+                      
                         ? () async {
-                              await authProvider.signIn(signInProvider.emailValue, signInProvider.passwordValue);
-                            }
+                          final bool? success = await apiCallSafety(() 
+                            => authProvider.signIn(signInProvider.emailValue, signInProvider.passwordValue),
+                            onStart: () async {
+
+                            },
+                            onCompleted: (status, res) async {
+
+                            },
+                            onError: (error) async {
+
+                            },
+                            skipOnError: true
+                          );
+
+                          if(success == true) {
+                            ref.navigator()?.pushReplacementNamed(AppRoute.routeHome);
+                          }
+                          
+                        }
                         : null,
                       child: const Text('Sign in'),
                     ),
