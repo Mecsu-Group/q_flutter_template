@@ -27,7 +27,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set id(int value) => RealmObjectBase.set(this, 'id', value);
 
   @override
-  String get name => RealmObjectBase.get<String>(this, 'accessToken') as String;
+  String get accessToken => RealmObjectBase.get<String>(this, 'accessToken') as String;
   @override
   set name(String value) => RealmObjectBase.set(this, 'accessToken', value);
 
