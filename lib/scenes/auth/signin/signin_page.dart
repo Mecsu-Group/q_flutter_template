@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:q_flutter_template/utils/app_log.dart';
+import 'package:q_flutter_template/safety/page_stateful.dart';
 
-import 'package:q_flutter_template/safety/base_statefull.dart';
+import 'package:q_flutter_template/services/api/api_error.dart';
+
+import 'package:q_flutter_template/services/providers/providers.dart';
+
 import './signin_provider.dart';
-import 'package:q_flutter_template/constants.dart';
+
 
 final pSignInProvider = ChangeNotifierProvider((_) => SignInProvider());
 
@@ -18,7 +21,7 @@ class SignInPage extends ConsumerStatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignInPageState extends BaseStateful<SignInPage> with WidgetsBindingObserver {
+class _SignInPageState extends PageStateful<SignInPage> with WidgetsBindingObserver, ApiError {
 
   late SignInProvider signInProvider;
 
@@ -26,6 +29,7 @@ class _SignInPageState extends BaseStateful<SignInPage> with WidgetsBindingObser
   void initDependencies(WidgetRef ref) {
     super.initDependencies(ref);
     signInProvider = ref.read(pSignInProvider);
+    authProvider = ref.read(pAuthProvider);
   }
 
    @override
@@ -51,6 +55,12 @@ class _SignInPageState extends BaseStateful<SignInPage> with WidgetsBindingObser
   }
 
   @override
+  Future<int> onApiError(dynamic error) async {
+    print('Error on API');
+    return 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -66,42 +76,43 @@ class _SignInPageState extends BaseStateful<SignInPage> with WidgetsBindingObser
           child: SizedBox(
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 50),
-                    Text(
-                      "Xin chào",
+                    const SizedBox(height: 50),
+                    const Text(
+                      "Q. Flutter",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      "Đăng nhập bằng email và mật khẩu của bạn",
+                    const Text(
+                      "🛠 An useful project structure for creating effectively Flutter applications",
                       textAlign: TextAlign.center,
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     buildEmailFormField(),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     buildPasswordFormField(),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                    /// Example call api with success http code but with error response,
-                    /// and how to use function response data instead property approach.
                     ElevatedButton(
                       key: const Key('SignIn'),
-                      onPressed: () {
-                      },
+                      onPressed: ref.watch(pSignInProvider.select((value) => value.formValid)) 
+                        ? () async {
+                              await authProvider.signIn(signInProvider.emailValue, signInProvider.passwordValue);
+                            }
+                        : null,
                       child: const Text('Sign in'),
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ],
                 )
               ),
@@ -116,7 +127,7 @@ class _SignInPageState extends BaseStateful<SignInPage> with WidgetsBindingObser
       keyboardType: TextInputType.emailAddress,
       // onSaved: (newValue) => email = newValue,
       onChanged: signInProvider.onEmailChangeToValidateForm,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
         // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -133,7 +144,7 @@ class _SignInPageState extends BaseStateful<SignInPage> with WidgetsBindingObser
       obscureText: true,
       // onSaved: (newValue) => email = newValue,
       onChanged: signInProvider.onPasswordChangeToValidateForm,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this

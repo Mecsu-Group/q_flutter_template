@@ -1,4 +1,5 @@
 import 'package:q_flutter_template/safety/change_notifier_safety.dart';
+import 'package:email_validator/email_validator.dart';
 
 import 'package:q_flutter_template/utils/app_log.dart';
 
@@ -56,15 +57,13 @@ class SignInProvider extends ChangeNotifierSafety {
   }
 
   void onEmailChangeToValidateForm(final String email) {
-    logger.d(email);
-
     _emailValue = email;
+    _emailValid = EmailValidator.validate(_emailValue);
     _validateForm();
   }
 
   void onPasswordChangeToValidateForm(final String password) {
     _passwordValue = password;
-
     _validateForm();
   }
 }

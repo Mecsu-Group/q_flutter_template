@@ -6,6 +6,7 @@ class ApiUser extends Api {
   /// Login
   Future<Response<Map<String, dynamic>>> signIn(String email, String password) async {
     final Options options = await getOptions();
+    print(options);
     return wrapE(() => dio.post<Map<String, dynamic>>('$apiBaseUrl/signin', options: options, data: <String, String>{
           'email': email,
           'password': password,
