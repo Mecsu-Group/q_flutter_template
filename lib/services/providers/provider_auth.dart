@@ -1,19 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:q_flutter_template/models/account.dart';
 import 'package:q_flutter_template/safety/change_notifier_safety.dart';
 import 'package:q_flutter_template/services/api/api_user.dart';
+
+import 'package:q_flutter_template/services/providers/provider_credential.dart';
 import 'package:q_flutter_template/services/providers/providers.dart';
-import 'package:realm/realm.dart';
-import 'package:q_flutter_template/models/account.dart';
+
 
 class AuthProvider extends ChangeNotifierSafety {
-  AuthProvider(this._api, this._realm);
+  AuthProvider(this._api, this._credential);
 
   /// Authentication api
   final ApiUser _api;
 
-  final Realm _realm;
+  final CredentialProvider _credential;
 
   @override
   void resetState() {}
