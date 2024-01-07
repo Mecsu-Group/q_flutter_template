@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
+import 'package:q_flutter_template/models/account.dart';
 import 'package:q_flutter_template/safety/change_notifier_safety.dart';
 import 'package:q_flutter_template/services/api/api_user.dart';
 
 import 'package:q_flutter_template/services/providers/provider_credential.dart';
-import 'package:q_flutter_template/services/providers/providers.dart';
+import 'package:realm/realm.dart';
 
 
 class AuthProvider extends ChangeNotifierSafety {
@@ -24,7 +25,15 @@ class AuthProvider extends ChangeNotifierSafety {
 
     // ignore: unnecessary_null_comparison
     if (result != null) {
-      return true;
+      final token = Token.fromJson(result.data as Map<String, dynamic>);
+      if(token.accessToken.isNotEmpty) {
+        final userAccount = Account(ObjectId());
+        userAccount.emailAddress = email;
+        userAccount.password = password;
+        await _credential.saveCredential(token, userAccount);
+      }
+
+      return false;
     } else {
       throw DioError(
           requestOptions: result.requestOptions,

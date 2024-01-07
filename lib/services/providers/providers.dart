@@ -8,6 +8,7 @@ import 'package:q_flutter_template/services/api/api_user.dart';
 
 import 'package:realm/realm.dart';
 import 'package:q_flutter_template/models/account.dart';
+import 'package:q_flutter_template/models/credential.dart';
 
 late Realm _realm;
 
@@ -28,7 +29,7 @@ final pAuthProvider = ChangeNotifierProvider((ref) {
 // ignore: prefer_function_declarations_over_variables
 final databaseProvider = (String dbName) async {
   Configuration.defaultRealmName = dbName;
-  final config = Configuration.local([Account.schema]);
+  final config = Configuration.local([Account.schema, Credential.schema]);
   _realm = Realm(config);
 };
 

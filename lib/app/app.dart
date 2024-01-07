@@ -36,13 +36,19 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
+
+  late bool hasCredential;
+
   @override
   void initState() {
     super.initState();
 
     /// Init page route
     () async {
-      ref.navigator()?.pushReplacementNamed(AppRoute.routeHome);
+      hasCredential = await ref.read(pCredentialProvider).loadCredential();
+      if(hasCredential) {
+        ref.navigator()?.pushReplacementNamed(AppRoute.routeHome);
+      } 
     }();
   }
 
@@ -77,7 +83,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         //https://github.com/flutter/flutter/issues/12454
         // home: (appRoute.generateRoute(const RouteSettings(name: AppRoute.routeRoot)) as MaterialPageRoute<dynamic>)
         //     .builder(context),
-        initialRoute: AppRoute.routeSignIn,
+        initialRoute: (hasCredential) ? AppRoute.routeHome : AppRoute.routeSignIn,
         onGenerateRoute: appRoute.generateRoute,
         navigatorObservers: <NavigatorObserver>[appRoute.routeObserver],
       ),
