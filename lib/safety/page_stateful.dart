@@ -16,6 +16,6 @@ abstract class PageStateful<T extends ConsumerStatefulWidget> extends BaseStatef
   void initDependencies(WidgetRef ref) {
     super.initDependencies(ref);
 
-    authProvider = ref.read(pAuthProvider);
+    
   }
 }

@@ -107,8 +107,6 @@ class _SignInPageState extends PageStateful<SignInPage> with WidgetsBindingObser
                     ElevatedButton(
                       key: const Key('SignIn'),
                       onPressed: ref.watch(pSignInProvider.select((value) => value.formValid)) 
-
-                      
                         ? () async {
                           final bool? success = await apiCallSafety(() 
                             => authProvider.signIn(signInProvider.emailValue, signInProvider.passwordValue),
